@@ -25,11 +25,11 @@ router.post('/newWallet', async (req, res) => {
     const mnemonic = req.body.mnemonic;
     let coinType = req.body.coinType || 0; //default로 bitcoin
     let keyType = req.body.keyType || 'm'; //default로 개인키, M은 공개키
-    let isBalanceAccount = req.body.isBalanceAccount || true; //default로 잔액계정
+    let isBalanceAccount = req.body.isBalanceAccount || "true"; //default로 잔액계정
     let newAccount = req.body.newAccount || "true";
 
     try {
-        let _isBalanceAccount = isBalanceAccount ? 1 : 0;// default로 잔액계정(1), 일반계정은 (0)
+        let _isBalanceAccount = isBalanceAccount === "true" ? 1 : 0;// default로 잔액계정(1), 일반계정은 (0)
         const hashedKey = String(crypto.createHash('sha256').update(mnemonic).digest('hex'));
         const _hashedKey = crypto.createHash('sha256').update(mnemonic + String(accountFromMnemonic[hashedKey])).digest('hex');
         let _keyType = keyType === "public" ? "M" : "m";
@@ -44,7 +44,7 @@ router.post('/newWallet', async (req, res) => {
             }
             accountFromMnemonic[hashedKey]++;
         } else {
-            addressFromAccount[_hashedKey] = addressFromAccount[_hashedKey] + 1 || 0;
+            addressFromAccount[_hashedKey] = addressFromAccount[_hashedKey] + 1 || 1;
         }
         console.log(hdPathString);
         lightwallet.keystore.createVault({
