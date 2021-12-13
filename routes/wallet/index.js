@@ -14,7 +14,6 @@ router.post('/newMnemonic', async (req, res) => {
         accountFromMnemonic[hashed] = accountFromMnemonic[hashed] || 0;
         const _hashed = crypto.createHash('sha256').update(mnemonic + String(accountFromMnemonic[hashed])).digest('hex');
         addressFromAccount[_hashed] = addressFromAccount[_hashed] || 0;
-        console.log(accountFromMnemonic, addressFromAccount)
         res.json({ mnemonic });
     } catch (error) {
         console.log(error);
@@ -59,7 +58,7 @@ router.post('/newWallet', async (req, res) => {
                     ks.generateNewAddress(pwDerivedKey, 1);
                     let address = (ks.getAddresses()).toString();
                     let keystore = ks.serialize();
-                    fs.writeFile(`${hashedKey.slice(0, 20)}_${accountFromMnemonic[hashedKey] || 0}_${addressFromAccount[_hashedKey] || 0}_wallet.json`, keystore, function (err, data) {
+                    fs.writeFile(`./keyStores/${hashedKey.slice(0, 20)}_${accountFromMnemonic[hashedKey] || 0}_${addressFromAccount[_hashedKey] || 0}_wallet.json`, keystore, function (err, data) {
                         if (err) {
                             res.json({ code: 999, message: "실패" });
                         } else {
