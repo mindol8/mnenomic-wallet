@@ -1,9 +1,8 @@
-var express = require('express');
-var router = express.Router();
-const lightwallet = require("eth-lightwallet");
-const fs = require('fs');
-const crypto = require("crypto");
-
+import express from 'express';
+import lightwallet from "eth-lightwallet";
+import fs from 'fs';
+import crypto from "crypto";
+const router = express.Router();
 let accountFromMnemonic = {};
 let addressFromAccount = {};
 router.post('/newMnemonic', async (req, res) => {
@@ -47,7 +46,7 @@ router.post('/newWallet', async (req, res) => {
         } else {
             addressFromAccount[_hashedKey] = addressFromAccount[_hashedKey] + 1 || 0;
         }
-        console.log(accountFromMnemonic, addressFromAccount)
+        console.log(hdPathString);
         lightwallet.keystore.createVault({
             password: password,
             seedPhrase: mnemonic,
@@ -73,4 +72,4 @@ router.post('/newWallet', async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router
